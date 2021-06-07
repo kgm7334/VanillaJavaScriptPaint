@@ -31,6 +31,19 @@ function startPainting(){
     painting = true;
 }
 
+function onTouchMove(event){
+    const x= event.touches[0].clientX;
+    const y= event.touches[0].clientY;
+    if(!painting){
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+    }
+    else{
+        ctx.lineTo(x,y);
+        ctx.stroke();
+    }
+}
+
 function onMouseMove(event){
     const x= event.offsetX;
     const y= event.offsetY;
@@ -96,6 +109,12 @@ if(canvas){
     canvas.addEventListener("mouseleave",stopPainting);
     canvas.addEventListener("click",handleCanvasClick);
     canvas.addEventListener("contextmenu",handleCM);
+
+    //Touch
+    canvas.addEventListener("touchstart",startPainting);
+    canvas.addEventListener("touchmove",onTouchMove);
+    canvas.addEventListener("touchend",stopPainting);
+    canvas.addEventListener("touchcancel",stopPainting);
 }
 
 Array.from(colors).forEach(color=>color.addEventListener("click",handleColorClick));
